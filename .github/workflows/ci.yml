@@ -3,7 +3,7 @@ name: CI
 on:
   push:
     branches:
-      - main
+      - master
       - develop
     paths-ignore:
       - docs/**
@@ -19,33 +19,27 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    name: JDK 1.8
+    runs-on: macOS-latest
+
     steps:
-    # チェックアウト
-    - uses: actions/checkout@v2
-
-    # JDKのセットアップ
-    - name: set up JDK 11
-      uses: actions/setup-java@v2
-      with:
-        distribution: 'zulu'
-        java-version: '11'
-
-    # Gradleのキャッシュ復元
-    - uses: actions/cache@v2
-      with:
-        path: ~/.gradle/caches
-        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
-        restore-keys: |
-          ${{ runner.os }}-gradle-
-
-    # 依存関係の出力
-    - name: Displays the Android dependencies of the project
-      run: ./gradlew androidDependencies
-
-    # コンパイル
-    - name: Run Compile
-      run: ./gradlew assembleDebug
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Install JDK 1.8
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+      - name: Install Android SDK
+        uses: malinskiy/action-android/install-sdk@release/0.0.5
+      - name: Build project
+        run: ./gradlew assemble --stacktrace
+      - name: Run instrumentation tests
+        uses: malinskiy/action-android/emulator-run-cmd@release/0.0.5
+        with:
+          cmd: ./gradlew connectedCheck --stacktrace
+          api: 25
+          tag: default
+          abi: x86
 
 jobs:
   ktlint:
