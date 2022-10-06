@@ -25,6 +25,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v1
+
+      # 実行権限を付与
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+
       - name: Install JDK 1.8
         uses: actions/setup-java@v1
         with:
@@ -45,6 +50,10 @@ jobs:
     steps:
       # チェックアウト
       - uses: actions/checkout@v2
+
+      # 実行権限を付与
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
 
       # JDKのセットアップ
       - name: set up JDK 11
@@ -94,6 +103,10 @@ jobs:
       # チェックアウト
       - uses: actions/checkout@v2
 
+      # 実行権限を付与
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+
       # 静的解析
       - name: Run Inspection
         run: ./gradlew lint
@@ -120,10 +133,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # チェックアウト
       - uses: actions/checkout@v2
 
+      # 実行権限を付与
       - name: Make gradlew executable
         run: chmod +x ./gradlew
 
+      # 静的解析
       - name: Run ktlint
         run: ./gradlew ktlint
