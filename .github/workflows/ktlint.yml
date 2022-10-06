@@ -1,0 +1,17 @@
+name: ktlint
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+jobs:
+  ktlint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run ktlint
+        run: ./gradlew ktlint
