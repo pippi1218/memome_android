@@ -16,7 +16,7 @@ interface TaskDao {
 
     // 指定されたIDのタスクを取得する
     @Query("SELECT * FROM taskEntity WHERE id")
-    fun read(id: Long)
+    fun read(id: Long): TaskEntity
 
     // タスクを追加する
     @Insert
